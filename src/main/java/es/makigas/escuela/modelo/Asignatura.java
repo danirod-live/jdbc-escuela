@@ -26,7 +26,7 @@ public class Asignatura {
     private String nombre;
 
     private Long idProfesor;
-
+    
     public Asignatura(String nombre, Long idProfesor) {
         this.nombre = nombre;
         this.idProfesor = idProfesor;
