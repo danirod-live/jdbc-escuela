@@ -5,8 +5,11 @@ import es.makigas.escuela.dao.DAOException;
 import es.makigas.escuela.modelo.Alumno;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLAlumnoDAO implements AlumnoDAO {
@@ -49,23 +52,141 @@ public class MySQLAlumnoDAO implements AlumnoDAO {
     }
 
     @Override
-    public void modificar(Alumno a) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void modificar(Alumno a) throws DAOException {
+        PreparedStatement stat = null;
+        try {
+            stat = conn.prepareStatement(UPDATE);
+            stat.setString(1, a.getNombre());
+            stat.setString(2, a.getApellidos());
+            stat.setDate(3, new Date(a.getFechaNacimiento().getTime()));
+            stat.setLong(4, a.getId());
+            if (stat.executeUpdate() == 0) {
+                throw new DAOException("Puede que no se haya modificado el modelo.");
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Error de SQL", ex);
+        } finally {
+            if (stat != null) {
+                try {
+                    stat.close();
+                } catch (SQLException ex) {
+                    throw new DAOException("Error de SQL", ex);
+                }
+            }
+        }
     }
 
     @Override
-    public void eliminar(Alumno a) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Alumno> obtenerTodos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Alumno obtener(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void eliminar(Alumno a) throws DAOException {
+        PreparedStatement stat = null;
+        try {
+            stat = conn.prepareStatement(DELETE);
+            stat.setLong(1, a.getId());
+            if (stat.executeUpdate() == 0) {
+                throw new DAOException("Puede que el alumno no se haya borrado.");
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Error de SQL", ex);
+        } finally {
+            if (stat != null) {
+                try {
+                    stat.close();
+                } catch (SQLException ex) {
+                    throw new DAOException("Error de SQL", ex);
+                }
+            }
+        }
     }
     
+    private Alumno convertir(ResultSet rs) throws SQLException {
+        String nombre = rs.getString("nombre");
+        String apellidos = rs.getString("apellidos");
+        Date fechaNac = rs.getDate("fecha_nac");
+        Alumno alumno = new Alumno(nombre, apellidos, fechaNac);
+        alumno.setId(rs.getLong("id_alumno"));
+        return alumno;
+    }
+    
+    @Override
+    public List<Alumno> obtenerTodos() throws DAOException {
+        PreparedStatement stat = null;
+        ResultSet rs = null;
+        List<Alumno> alumnos = new ArrayList<>();
+        try {
+            stat = conn.prepareStatement(GETALL);
+            rs = stat.executeQuery();
+            while (rs.next()) {
+                alumnos.add(convertir(rs));
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Error en SQL", ex);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    new DAOException("Error en SQL", ex);
+                }
+            }
+            if (stat != null) {
+                try {
+                    stat.close();
+                } catch (SQLException ex) {
+                    new DAOException("Error en SQL", ex);
+                }
+            }
+        }
+        return alumnos;
+    }
+
+    @Override
+    public Alumno obtener(Long id) throws DAOException {
+        PreparedStatement stat = null;
+        ResultSet rs = null;
+        Alumno a = null;
+        try {
+            stat = conn.prepareStatement(GETONE);
+            stat.setLong(1, id);
+            rs = stat.executeQuery();
+            if (rs.next()) {
+                a = convertir(rs);
+            } else {
+                throw new DAOException("No se ha encontrado ese registro.");
+            }
+        } catch (SQLException ex) {
+            throw new DAOException("Error en SQL", ex);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    new DAOException("Error en SQL", ex);
+                }
+            }
+            if (stat != null) {
+                try {
+                    stat.close();
+                } catch (SQLException ex) {
+                    new DAOException("Error en SQL", ex);
+                }
+            }
+        }
+        return a;
+    }
+    
+    public static void main(String[] args) throws SQLException, DAOException {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/escuela", "ejemplo", "ejemplo");
+            AlumnoDAO dao = new MySQLAlumnoDAO(conn);
+            List<Alumno> alumnos = dao.obtenerTodos();
+            for (Alumno a: alumnos) {
+                System.out.println(a.toString());
+            }
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
 }
