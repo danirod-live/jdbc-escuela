@@ -33,9 +33,9 @@ public class MySQLMatriculaDAO implements MatriculaDAO {
         PreparedStatement stat = null;
         try {
             stat = conn.prepareStatement(INSERT);
-            stat.setLong(1, a.getID().getAlumno());
-            stat.setLong(2, a.getID().getAsignatura());
-            stat.setInt(3, a.getID().getYear());
+            stat.setLong(1, a.getId().getAlumno());
+            stat.setLong(2, a.getId().getAsignatura());
+            stat.setInt(3, a.getId().getYear());
             if (a.getNota() != null) {
                 stat.setInt(4, a.getNota());
             } else {
@@ -63,9 +63,9 @@ public class MySQLMatriculaDAO implements MatriculaDAO {
             } else {
                 stat.setNull(1, Types.INTEGER);
             }
-            stat.setLong(2, a.getID().getAlumno());
-            stat.setLong(3, a.getID().getAsignatura());
-            stat.setInt(4, a.getID().getYear());
+            stat.setLong(2, a.getId().getAlumno());
+            stat.setLong(3, a.getId().getAsignatura());
+            stat.setInt(4, a.getId().getYear());
             
             /* Hacemos el update. */
             if (stat.executeUpdate() == 0) {
@@ -83,9 +83,9 @@ public class MySQLMatriculaDAO implements MatriculaDAO {
         PreparedStatement stat = null;
         try {
             stat = conn.prepareStatement(DELETE);
-            stat.setLong(1, a.getID().getAlumno());
-            stat.setLong(2, a.getID().getAsignatura());
-            stat.setInt(3, a.getID().getYear());
+            stat.setLong(1, a.getId().getAlumno());
+            stat.setLong(2, a.getId().getAsignatura());
+            stat.setInt(3, a.getId().getYear());
             
             /* Hacemos el delete. */
             if (stat.executeUpdate() == 0) {

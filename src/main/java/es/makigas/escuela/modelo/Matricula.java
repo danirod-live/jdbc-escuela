@@ -111,11 +111,11 @@ public class Matricula {
         this.id = new IdMatricula(alumno, asignatura, year);
     }
 
-    public IdMatricula getID() {
+    public IdMatricula getId() {
         return id;
     }
     
-    public void setIdMatricula(IdMatricula id) {
+    public void setId(IdMatricula id) {
         this.id = id;
     }
 
