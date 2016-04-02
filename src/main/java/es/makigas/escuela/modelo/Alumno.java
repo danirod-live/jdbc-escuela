@@ -36,6 +36,12 @@ public class Alumno {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    public Alumno() {
+        this.nombre = "";
+        this.apellidos = "";
+        this.fechaNacimiento = new Date();
+    }
+
     public Long getId() {
         return id;
     }
