@@ -5,8 +5,10 @@ import es.makigas.escuela.dao.DAOManager;
 import es.makigas.escuela.dao.mysql.MySQLDaoManager;
 import es.makigas.escuela.modelo.Alumno;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class ListAlumnosFrame extends javax.swing.JFrame {
 
@@ -18,13 +20,19 @@ public class ListAlumnosFrame extends javax.swing.JFrame {
         initComponents();
         this.manager = manager;
         this.model = new AlumnosTableModel(manager.getAlumnoDAO());
-        this.model.updateModel();
+        obtenerDatos();
         this.tabla.setModel(model);
         this.tabla.getSelectionModel().addListSelectionListener(e -> {
             boolean seleccionValida = (tabla.getSelectedRow() != -1);
             editar.setEnabled(seleccionValida);
             borrar.setEnabled(seleccionValida);
         });
+    }
+    
+    final void obtenerDatos() throws DAOException {
+        progreso.setText("Actualizando modelo...");
+        model.updateModel();
+        progreso.setText(model.getRowCount() + " alumnos visibles.");
     }
     
     @SuppressWarnings("unchecked")
@@ -89,6 +97,11 @@ public class ListAlumnosFrame extends javax.swing.JFrame {
         borrar.setFocusable(false);
         borrar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         borrar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        borrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                borrarActionPerformed(evt);
+            }
+        });
         toolbar.add(borrar);
         toolbar.add(jSeparator2);
 
@@ -100,6 +113,11 @@ public class ListAlumnosFrame extends javax.swing.JFrame {
         guardar.setFocusable(false);
         guardar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         guardar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarActionPerformed(evt);
+            }
+        });
         toolbar.add(guardar);
 
         cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancel.png"))); // NOI18N
@@ -184,6 +202,43 @@ public class ListAlumnosFrame extends javax.swing.JFrame {
         guardar.setEnabled(true);
         cancelar.setEnabled(true);
     }//GEN-LAST:event_addActionPerformed
+
+    private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
+        try {
+            detalle.saveData();
+            Alumno alu = detalle.getAlumno();
+            if (alu.getId() == null) {
+                manager.getAlumnoDAO().insertar(alu);
+            } else {
+                manager.getAlumnoDAO().modificar(alu);
+            }
+            detalle.setAlumno(null);
+            detalle.setEditable(false);
+            detalle.loadData();
+            tabla.clearSelection();
+            guardar.setEnabled(false);
+            cancelar.setEnabled(false);
+            
+            obtenerDatos();
+            model.fireTableDataChanged();
+        } catch (ParseException | DAOException ex) {
+            Logger.getLogger(ListAlumnosFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_guardarActionPerformed
+
+    private void borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarActionPerformed
+        if (JOptionPane.showConfirmDialog(rootPane, "¿Seguro que quieres borrar este alumno?",
+                "Borrar alumno", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+            try {
+                Alumno alumno = getAlumnoSeleccionado();
+                manager.getAlumnoDAO().eliminar(alumno);
+                obtenerDatos();
+                model.fireTableDataChanged();
+            } catch (DAOException ex) {
+                Logger.getLogger(ListAlumnosFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_borrarActionPerformed
 
     public static void main(String args[]) throws SQLException {
         DAOManager manager = new MySQLDaoManager("localhost", "ejemplo", "ejemplo", "escuela");

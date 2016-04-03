@@ -1,6 +1,7 @@
 package es.makigas.escuela.frames;
 
 import es.makigas.escuela.modelo.Alumno;
+import java.text.ParseException;
 import java.util.Date;
 
 public class DetalleAlumnoPanel extends javax.swing.JPanel {
@@ -40,17 +41,18 @@ public class DetalleAlumnoPanel extends javax.swing.JPanel {
         } else {
             apellidos.setText("");
             nombre.setText("");
-            fechanac.setText("");
+            fechanac.setValue(null);
         }
         apellidos.requestFocus();
     }
     
-    public void saveData() {
+    public void saveData() throws ParseException {
         if (alumno == null) {
             alumno = new Alumno();
         }
         alumno.setApellidos(apellidos.getText());
         alumno.setNombre(nombre.getText());
+        fechanac.commitEdit();
         alumno.setFechaNacimiento((Date) fechanac.getValue());
     }
 
