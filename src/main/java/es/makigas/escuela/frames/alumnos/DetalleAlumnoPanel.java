@@ -1,4 +1,4 @@
-package es.makigas.escuela.frames;
+package es.makigas.escuela.frames.alumnos;
 
 import es.makigas.escuela.modelo.Alumno;
 import java.text.ParseException;

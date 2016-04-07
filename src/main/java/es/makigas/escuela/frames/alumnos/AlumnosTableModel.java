@@ -1,4 +1,4 @@
-package es.makigas.escuela.frames;
+package es.makigas.escuela.frames.alumnos;
 
 import es.makigas.escuela.dao.AlumnoDAO;
 import es.makigas.escuela.dao.DAOException;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
-public class AlumnosTableModel extends AbstractTableModel {
+class AlumnosTableModel extends AbstractTableModel {
     
     private AlumnoDAO alumnos;
     

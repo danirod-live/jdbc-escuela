@@ -189,7 +189,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="es.makigas.escuela.frames.DetalleAlumnoPanel" name="detalle">
+        <Component class="es.makigas.escuela.frames.alumnos.DetalleAlumnoPanel" name="detalle">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
               <BorderConstraints direction="After"/>

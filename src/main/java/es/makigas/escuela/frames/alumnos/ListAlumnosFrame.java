@@ -1,4 +1,4 @@
-package es.makigas.escuela.frames;
+package es.makigas.escuela.frames.alumnos;
 
 import es.makigas.escuela.dao.DAOException;
 import es.makigas.escuela.dao.DAOManager;
@@ -51,7 +51,7 @@ public class ListAlumnosFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
-        detalle = new es.makigas.escuela.frames.DetalleAlumnoPanel();
+        detalle = new es.makigas.escuela.frames.alumnos.DetalleAlumnoPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registro de alumnos");
@@ -240,22 +240,11 @@ public class ListAlumnosFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_borrarActionPerformed
 
-    public static void main(String args[]) throws SQLException {
-        DAOManager manager = new MySQLDaoManager("localhost", "ejemplo", "ejemplo", "escuela");
-        java.awt.EventQueue.invokeLater(() -> {
-            try {
-                new ListAlumnosFrame(manager).setVisible(true);
-            } catch (DAOException ex) {
-                Logger.getLogger(ListAlumnosFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;
     private javax.swing.JButton borrar;
     private javax.swing.JButton cancelar;
-    private es.makigas.escuela.frames.DetalleAlumnoPanel detalle;
+    private es.makigas.escuela.frames.alumnos.DetalleAlumnoPanel detalle;
     private javax.swing.JButton editar;
     private javax.swing.JButton guardar;
     private javax.swing.JPanel jPanel1;
