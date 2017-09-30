@@ -1,5 +1,6 @@
 package es.makigas.escuela.frames.asignaturas;
 
+import es.makigas.escuela.util.ProfesorComboView;
 import es.makigas.escuela.dao.DAOException;
 import es.makigas.escuela.dao.ProfesorDAO;
 import es.makigas.escuela.modelo.Profesor;
@@ -26,6 +27,4 @@ public class ProfesoresComboModel extends DefaultComboBoxModel<ProfesorComboView
             }
         }
     }
-    
-    
 }

@@ -1,6 +1,7 @@
 
 package es.makigas.escuela.frames.asignaturas;
 
+import es.makigas.escuela.util.ProfesorComboView;
 import es.makigas.escuela.dao.DAOException;
 import es.makigas.escuela.dao.ProfesorDAO;
 import es.makigas.escuela.modelo.Asignatura;
@@ -14,6 +15,8 @@ public class DetalleAsignaturaPanel extends javax.swing.JPanel {
     
     private ProfesoresComboModel model;
     
+    private ProfesorDAO dao;
+    
     public DetalleAsignaturaPanel() {
         initComponents();
         model = new ProfesoresComboModel(null);
@@ -22,8 +25,17 @@ public class DetalleAsignaturaPanel extends javax.swing.JPanel {
     public DetalleAsignaturaPanel(ProfesorDAO dao) throws DAOException {
         initComponents();
         model = new ProfesoresComboModel(dao);
+        this.dao = dao;
         model.update();
         profesor.setModel(model);
+    }
+
+    public void setDao(ProfesorDAO dao) {
+        this.dao = dao;
+    }
+
+    public ProfesorDAO getDao() {
+        return dao;
     }
 
     public ProfesoresComboModel getModel() {
@@ -54,11 +66,15 @@ public class DetalleAsignaturaPanel extends javax.swing.JPanel {
         return editable;
     }
     
-    public void loadData() {
+    public void loadData() throws DAOException {
         if (asignatura == null) {
             asignatura = new Asignatura("", null);
         }
         nombre.setText(asignatura.getNombre());
+        if (asignatura.getIdProfesor() != null) {
+            Profesor p = dao.obtener(asignatura.getIdProfesor());
+            model.setSelectedItem(new ProfesorComboView(p));
+        }
         nombre.requestFocus();
     }
     

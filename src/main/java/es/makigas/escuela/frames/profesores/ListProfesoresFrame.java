@@ -63,7 +63,7 @@ public class ListProfesoresFrame extends javax.swing.JFrame {
         tabla = new javax.swing.JTable();
         detalle = new es.makigas.escuela.frames.profesores.DetalleProfesorPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de profesores");
 
         jToolBar1.setFloatable(false);
@@ -254,7 +254,7 @@ public class ListProfesoresFrame extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;
     private javax.swing.JButton borrar;

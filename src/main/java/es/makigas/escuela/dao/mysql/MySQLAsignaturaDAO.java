@@ -131,6 +131,7 @@ public class MySQLAsignaturaDAO implements AsignaturaDAO {
         
         try {
             stat = conn.prepareStatement(GETONE);
+            stat.setLong(1, id);
             rs = stat.executeQuery();
             if (rs.next()) {
                 asignatura = convertir(rs);

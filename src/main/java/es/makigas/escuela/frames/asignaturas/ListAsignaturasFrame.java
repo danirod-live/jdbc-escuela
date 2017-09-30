@@ -33,6 +33,7 @@ public class ListAsignaturasFrame extends javax.swing.JFrame {
         updateTable();
         this.detalle.setEditable(false);
         this.detalle.setAsignatura(null);
+        this.detalle.setDao(manager.getProfesorDAO());
         this.detalle.setModel(new ProfesoresComboModel(manager.getProfesorDAO()));
         activarBotonesCRUD(false);
         activarBotonesGuardar(false);
@@ -58,6 +59,8 @@ public class ListAsignaturasFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         detalle = new es.makigas.escuela.frames.asignaturas.DetalleAsignaturaPanel();
+
+        setSize(new java.awt.Dimension(640, 400));
 
         toolbar.setFloatable(false);
         toolbar.setRollover(true);
@@ -162,10 +165,14 @@ public class ListAsignaturasFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-        activarBotonesGuardar(true);
-        detalle.setEditable(true);
-        detalle.setAsignatura(null);
-        detalle.loadData();
+        try {
+            activarBotonesGuardar(true);
+            detalle.setEditable(true);
+            detalle.setAsignatura(null);
+            detalle.loadData();
+        } catch (DAOException ex) {
+            Logger.getLogger(ListAsignaturasFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_addActionPerformed
 
     Asignatura obtenerAsignaturaSeleccionada() throws DAOException {
@@ -219,12 +226,16 @@ public class ListAsignaturasFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_guardarActionPerformed
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
-        detalle.setAsignatura(null);
-        detalle.setEditable(false);
-        detalle.loadData();
-        activarBotonesCRUD(false);
-        activarBotonesGuardar(false);
-        tabla.clearSelection();
+        try {
+            detalle.setAsignatura(null);
+            detalle.setEditable(false);
+            detalle.loadData();
+            activarBotonesCRUD(false);
+            activarBotonesGuardar(false);
+            tabla.clearSelection();
+        } catch (DAOException ex) {
+            Logger.getLogger(ListAsignaturasFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_cancelarActionPerformed
 
     public static void main(String[] args) {

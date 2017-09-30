@@ -53,7 +53,7 @@ public class ListAlumnosFrame extends javax.swing.JFrame {
         tabla = new javax.swing.JTable();
         detalle = new es.makigas.escuela.frames.alumnos.DetalleAlumnoPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de alumnos");
 
         toolbar.setFloatable(false);
