@@ -24,6 +24,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class MySQLProfesorDAO implements ProfesorDAO {
         PreparedStatement stat = null;
         ResultSet rs = null;
         try {
-            stat = conn.prepareStatement(INSERT);
+            stat = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             stat.setString(1, p.getNombre());
             stat.setString(2, p.getApellidos());
             if (stat.executeUpdate() == 0) {

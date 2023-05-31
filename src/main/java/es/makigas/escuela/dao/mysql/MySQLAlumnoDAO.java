@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class MySQLAlumnoDAO implements AlumnoDAO {
         PreparedStatement stat = null;
         ResultSet rs = null;
         try {
-            stat = conn.prepareStatement(INSERT);
+            stat = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             stat.setString(1, a.getNombre());
             stat.setString(2, a.getApellidos());
             stat.setDate(3, new Date(a.getFechaNacimiento().getTime()));

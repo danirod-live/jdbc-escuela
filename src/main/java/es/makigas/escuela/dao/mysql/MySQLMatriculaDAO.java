@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class MySQLMatriculaDAO implements MatriculaDAO {
     public void insertar(Matricula a) throws DAOException {
         PreparedStatement stat = null;
         try {
-            stat = conn.prepareStatement(INSERT);
+            stat = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             stat.setLong(1, a.getId().getAlumno());
             stat.setLong(2, a.getId().getAsignatura());
             stat.setInt(3, a.getId().getYear());
